@@ -1,6 +1,4 @@
 using Avalonia.Controls;
-using Avalonia.Controls.ApplicationLifetimes;
-using Avalonia.Interactivity;
 using Docnet.Core.Models;
 using Docnet.Core;
 using PDFTransform.Views;
@@ -10,13 +8,10 @@ using System.Collections.Generic;
 using System.IO;
 using System.IO.Compression;
 using System.Reactive;
-using System.Text;
 using PDFTransform.Models;
 using System.Collections.ObjectModel;
-using DynamicData.Binding;
 using OfficeOpenXml;
 using System.Threading.Tasks;
-using DynamicData;
 using PDFTransform.utils;
 
 namespace PDFTransform.ViewModels
@@ -192,7 +187,13 @@ namespace PDFTransform.ViewModels
                     using (var pageReader = docReader.GetPageReader(i))
                     {
                         text = pageReader.GetText();
-                        acta = ProcessActa(text);
+
+                        string[] content = text.Split("\r\n");
+
+                        if (Heuristic.IsActa(content[0]))
+                        {
+                            acta = Heuristic.GetData(content, acta);
+                        }
                     }
                 }
 
@@ -214,25 +215,19 @@ namespace PDFTransform.ViewModels
                     using (var pageReader = docReader.GetPageReader(i))
                     {
                         text = pageReader.GetText();
-                        acta = ProcessActa(text);
+
+                        string[] content = text.Split("\r\n");
+
+                        if (Heuristic.IsActa(content[0]))
+                        {
+                            acta = Heuristic.GetData(content, acta);
+                        }
+
                     }
                 }
 
             }
 
-            return acta;
-        }
-
-        private Acta ProcessActa(string text)
-        {
-            string[] content = text.Split("\r\n");
-            Acta acta = new Acta();
-
-            if (Heuristic.IsActa(content[0]))
-            {
-                acta = Heuristic.GetData(content);
-            }
-            
             return acta;
         }
 
