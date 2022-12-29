@@ -21,16 +21,19 @@ namespace PDFTransform.Models
             
         }
 
-        public static Acta GetData(string[] content)
+        public static Acta GetData(string[] content, Acta acta)
         {
-            Acta acta = new Acta();
             int contentLen = content.Length;
 
-            acta.career = content[career];
-            acta.course = content[course].Replace("ASIGNATURA: ","");
-            acta.period = content[period].Replace("ACTA DE CALIFICACIONES FINALES DEL PERIODO ", "");
-            acta.group = content[group];
-            acta.teacher = content[teacher];
+            if(acta.career.Length == 0)
+            {
+                acta.career = content[career];
+                acta.course = content[course].Replace("ASIGNATURA: ", "");
+                acta.period = content[period].Replace("ACTA DE CALIFICACIONES FINALES DEL PERIODO ", "");
+                acta.group = content[group];
+                acta.teacher = content[teacher];
+            }
+            
 
             for(int index = dataStart; index < contentLen; index++)
             {
@@ -73,8 +76,12 @@ namespace PDFTransform.Models
 
             acta.numStudents = acta.students.Count;
             acta.approved = acta.students.Where(s => s.grade != "NC").Count();
-            acta.average = acta.students.Sum(s => s.grade != "NC" ? Convert.ToDecimal(s.grade) : 6) / acta.numStudents;
 
+            if(acta.numStudents > 0)
+            {
+                acta.average = acta.students.Sum(s => s.grade != "NC" ? Convert.ToDecimal(s.grade) : 6) / acta.numStudents;
+            }
+            
             return acta;
         }
 
