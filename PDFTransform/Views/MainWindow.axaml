@@ -1,0 +1,70 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:vm="using:PDFTransform.ViewModels"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:conv="using:PDFTransform.Converters"
+        mc:Ignorable="d"
+        x:Class="PDFTransform.Views.MainWindow"
+        Icon="/Assets/exp-logo.ico"
+        Title="PDFTransform"
+        SizeToContent="Manual"
+        Width="1370" Height="500"
+        CanResize="False"
+        >
+        
+    <Window.Resources>
+      <conv:TextToCapitalConverter x:Key="TextToCapitalConverter" />
+    </Window.Resources>
+  
+    <Design.DataContext>
+        <vm:MainWindowViewModel/>
+    </Design.DataContext>
+    
+  <Panel HorizontalAlignment="Center" VerticalAlignment="Top" Margin="5">
+    <StackPanel Orientation="Vertical">
+      <Grid Margin="0,0,0,10">
+        <Grid.ColumnDefinitions>
+          <ColumnDefinition Width="656" />
+          <ColumnDefinition Width="656" />
+        </Grid.ColumnDefinitions>
+
+        <WrapPanel Grid.Column="0">
+          <TextBox Width="150" BorderBrush="#9D9D9D" IsReadOnly="True" Watermark="{ Binding DocumentName, Mode=TwoWay }"></TextBox>
+          <Button Height="32" Command="{Binding LoadDocument}">Load zip file</Button>
+        </WrapPanel>
+
+        <WrapPanel Grid.Column="1" HorizontalAlignment="Right">
+          <TextBox Width="400" BorderBrush="#9D9D9D" Watermark="Resource id" Text="{ Binding Url }"></TextBox>
+          <Button Height="32" Command="{ Binding DownloadDocument }" IsEnabled="{ Binding IsNotDownloading }">Download files from Drive</Button>
+        </WrapPanel>
+      </Grid>
+      
+      <DataGrid Items="{ Binding Actas }" AutoGenerateColumns="False" Width="1320" MaxHeight="400">
+        <DataGrid.Columns>
+          <DataGridTextColumn IsReadOnly="True" Header="Career"  Binding="{Binding career}" />
+          <DataGridTextColumn IsReadOnly="True" Header="Teacher" Binding="{Binding teacher, Converter={StaticResource TextToCapitalConverter} }" />
+          <DataGridTextColumn IsReadOnly="True" Header="Course" Binding="{Binding course, Converter={StaticResource TextToCapitalConverter} }" />
+          <DataGridTextColumn IsReadOnly="True" Header="Group" Binding="{Binding group}" />
+          <DataGridTextColumn IsReadOnly="True" Header="Period" Binding="{Binding period, Converter={StaticResource TextToCapitalConverter} }" />
+          <DataGridTextColumn IsReadOnly="True" Header="Students" Binding="{Binding numStudents}" />
+          <DataGridTextColumn IsReadOnly="True" Header="Approved" Binding="{Binding approved}" />
+          <DataGridTextColumn IsReadOnly="True" Header="Failed" Binding="{Binding failed}" />
+          <DataGridTemplateColumn Header="Avg">
+            <DataGridTemplateColumn.CellTemplate>
+              <DataTemplate>
+                <TextBlock Text="{Binding average, StringFormat={}{0:0.00}}" VerticalAlignment="Center" HorizontalAlignment="Center" />
+              </DataTemplate>
+            </DataGridTemplateColumn.CellTemplate>
+          </DataGridTemplateColumn>
+        </DataGrid.Columns>
+      </DataGrid>
+
+      <WrapPanel HorizontalAlignment="Right" Margin="5">
+        <ProgressBar ShowProgressText="True" Value="{Binding Progress}" IsVisible="{Binding ProgressIsVisible}" Minimum="0" Maximum="100" IsIndeterminate="False" Height="30"></ProgressBar>
+        <Button Height="32" Command="{Binding ConvertDocument}">Convert to Excel</Button>
+      </WrapPanel>
+    </StackPanel>
+   
+  </Panel>
+</Window>

@@ -1,0 +1,219 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi"><?define PDFTransform_TargetDir=$(var.PDFTransform.TargetDir)?>
+	<Product Id="*" Name="PDFTransform" Language="1033" Version="1.0.0.0" Manufacturer="Arkcode" UpgradeCode="a167815e-731a-4d74-a80a-2a87c06ef1f9">
+		<Package InstallerVersion="200" Compressed="yes" InstallScope="perMachine" />
+
+    <UIRef Id="WixUI_InstallDir" />
+
+    <Icon Id="icon.ico" SourceFile="$(var.ProjectDir)\icon.ico" />
+    <Property Id="ARPPRODUCTICON" Value="icon.ico" />
+
+    <WixVariable Id="WixUILicenseRtf" Value="$(var.ProjectDir)\license.rtf" />
+
+    <MajorUpgrade DowngradeErrorMessage="A newer version of [ProductName] is already installed." />
+    <MediaTemplate EmbedCab="yes" />
+
+		<Feature Id="ProductFeature" Title="PDFTransform" Level="1">
+			<ComponentGroupRef Id="ProductComponents" />
+      <ComponentRef Id="ApplicationShortcut" />
+      <ComponentRef Id="ApplicationShortcutDesktop" />
+		</Feature>
+	</Product>
+
+	<Fragment>
+		<Directory Id="TARGETDIR" Name="SourceDir">
+			<Directory Id="ProgramFilesFolder">
+				<Directory Id="INSTALLFOLDER" Name="PDFTransform">
+				  <Directory Id="runtimes" Name="runtimes" />
+				</Directory>
+        <Directory Id="ProgramMenuFolder">
+          <Directory Id="ApplicationProgramsFolder" Name="PDFTransform" />
+        </Directory>
+        <Directory Id="DesktopFolder" Name="Desktop" />
+			</Directory>
+		</Directory>
+    
+    <Property Id="WIXUI_INSTALLDIR" Value="INSTALLFOLDER" />
+    <UIRef Id="WixUI_InstallDir" />
+	</Fragment>
+
+  <Fragment>
+    <DirectoryRef Id="ApplicationProgramsFolder">
+      <Component Id="ApplicationShortcut" Guid="9bd13330-6540-406f-a3a8-d7f7c69ae7f9">
+        <Shortcut Id="ApplicationStartMenuShortcut" Name="PDFTransform" Description="PDFTransform" Target="[INSTALLFOLDER]PDFTransform.exe" WorkingDirectory="INSTALLFOLDER" Icon="icon.ico" />
+        <RemoveFolder Id="RemoveApplicationProgramsFolder" Directory="ApplicationProgramsFolder" On="uninstall" />
+        <RegistryValue Root="HKCU" Key="PDFTransform" Name="installed" Type="integer" Value="1" KeyPath="yes" />
+      </Component>
+    </DirectoryRef>
+    <DirectoryRef Id="DesktopFolder">
+      <Component Id="ApplicationShortcutDesktop" Guid="cde1e030-eb64-49a5-b7b8-400b379c2d1a">
+        <Shortcut Id="ApplicationDesktopShortcut" Name="PDFTransform" Description="PDFTransform" Target="[INSTALLFOLDER]PDFTransform.exe" WorkingDirectory="INSTALLFOLDER" Icon="icon.ico" />
+        <RemoveFolder Id="RemoveDesktopFolder" Directory="DesktopFolder" On="uninstall" />
+        <RegistryValue Root="HKCU" Key="PDFTransform" Name="installed" Type="integer" Value="1" KeyPath="yes" />
+      </Component>
+    </DirectoryRef>
+  </Fragment>
+  
+	<Fragment>
+		<ComponentGroup Id="ProductComponents" Directory="INSTALLFOLDER">
+      <Component Id="PDFTransform.runtimeconfig.json" Guid="fa17feb9-2b6f-4496-b8f0-addd5d6f7db3">
+			  <File Id="PDFTransform.runtimeconfig.json" Name="PDFTransform.runtimeconfig.json" Source="$(var.PDFTransform_TargetDir)PDFTransform.runtimeconfig.json" />
+			</Component>
+			<Component Id="System.Security.Cryptography.Pkcs.dll" Guid="b427a0f7-a74d-4e3c-be13-68a60c15689b">
+			  <File Id="System.Security.Cryptography.Pkcs.dll" Name="System.Security.Cryptography.Pkcs.dll" Source="$(var.PDFTransform_TargetDir)System.Security.Cryptography.Pkcs.dll" />
+			</Component>
+			<Component Id="Microsoft.Extensions.Configuration.dll" Guid="bf8ddf07-be43-40c6-86bc-53661b2a96bb">
+			  <File Id="Microsoft.Extensions.Configuration.dll" Name="Microsoft.Extensions.Configuration.dll" Source="$(var.PDFTransform_TargetDir)Microsoft.Extensions.Configuration.dll" />
+			</Component>
+			<Component Id="System.Drawing.Common.dll" Guid="84b16ead-549b-4ec9-bc92-256c73c8e8ea">
+			  <File Id="System.Drawing.Common.dll" Name="System.Drawing.Common.dll" Source="$(var.PDFTransform_TargetDir)System.Drawing.Common.dll" />
+			</Component>
+			<Component Id="Microsoft.Extensions.Configuration.Abstractions.dll" Guid="8227a8bc-eaf8-4c59-9bdd-f90b0f115da1">
+			  <File Id="Microsoft.Extensions.Configuration.Abstractions.dll" Name="Microsoft.Extensions.Configuration.Abstractions.dll" Source="$(var.PDFTransform_TargetDir)Microsoft.Extensions.Configuration.Abstractions.dll" />
+			</Component>
+			<Component Id="Microsoft.Extensions.Primitives.dll" Guid="6d243b26-b142-4ab1-ae14-548620266c82">
+			  <File Id="Microsoft.Extensions.Primitives.dll" Name="Microsoft.Extensions.Primitives.dll" Source="$(var.PDFTransform_TargetDir)Microsoft.Extensions.Primitives.dll" />
+			</Component>
+			<Component Id="Microsoft.Extensions.Configuration.FileExtensions.dll" Guid="316a8538-98d8-4dfa-9055-dccf9c3a9214">
+			  <File Id="Microsoft.Extensions.Configuration.FileExtensions.dll" Name="Microsoft.Extensions.Configuration.FileExtensions.dll" Source="$(var.PDFTransform_TargetDir)Microsoft.Extensions.Configuration.FileExtensions.dll" />
+			</Component>
+			<Component Id="Microsoft.Extensions.FileProviders.Abstractions.dll" Guid="00685619-0d8b-4cc3-9435-2c92611742b5">
+			  <File Id="Microsoft.Extensions.FileProviders.Abstractions.dll" Name="Microsoft.Extensions.FileProviders.Abstractions.dll" Source="$(var.PDFTransform_TargetDir)Microsoft.Extensions.FileProviders.Abstractions.dll" />
+			</Component>
+			<Component Id="Microsoft.Extensions.FileProviders.Physical.dll" Guid="b59203e6-9e00-4360-a19e-5550835bae25">
+			  <File Id="Microsoft.Extensions.FileProviders.Physical.dll" Name="Microsoft.Extensions.FileProviders.Physical.dll" Source="$(var.PDFTransform_TargetDir)Microsoft.Extensions.FileProviders.Physical.dll" />
+			</Component>
+			<Component Id="Microsoft.Extensions.FileSystemGlobbing.dll" Guid="ae79a23c-d5d3-4ef6-b8d1-c28d640215a8">
+			  <File Id="Microsoft.Extensions.FileSystemGlobbing.dll" Name="Microsoft.Extensions.FileSystemGlobbing.dll" Source="$(var.PDFTransform_TargetDir)Microsoft.Extensions.FileSystemGlobbing.dll" />
+			</Component>
+			<Component Id="Microsoft.Extensions.Configuration.Json.dll" Guid="6b3fd9c9-8cfc-498b-88a2-0c42749e70bb">
+			  <File Id="Microsoft.Extensions.Configuration.Json.dll" Name="Microsoft.Extensions.Configuration.Json.dll" Source="$(var.PDFTransform_TargetDir)Microsoft.Extensions.Configuration.Json.dll" />
+			</Component>
+			<Component Id="Newtonsoft.Json.dll" Guid="c156374b-c4f0-405d-87e5-2691b0b50128">
+			  <File Id="Newtonsoft.Json.dll" Name="Newtonsoft.Json.dll" Source="$(var.PDFTransform_TargetDir)Newtonsoft.Json.dll" />
+			</Component>
+			<Component Id="DynamicData.dll" Guid="a05a6784-f5e8-4a51-85f6-7680d7a56115">
+			  <File Id="DynamicData.dll" Name="DynamicData.dll" Source="$(var.PDFTransform_TargetDir)DynamicData.dll" />
+			</Component>
+			<Component Id="Avalonia.Native.dll" Guid="6ceb4958-b6c5-44bf-81ec-6872ce20a162">
+			  <File Id="Avalonia.Native.dll" Name="Avalonia.Native.dll" Source="$(var.PDFTransform_TargetDir)Avalonia.Native.dll" />
+			</Component>
+			<Component Id="Avalonia.Dialogs.dll" Guid="91cc32e6-6905-41d7-9716-0cda2007e932">
+			  <File Id="Avalonia.Dialogs.dll" Name="Avalonia.Dialogs.dll" Source="$(var.PDFTransform_TargetDir)Avalonia.Dialogs.dll" />
+			</Component>
+			<Component Id="Avalonia.Win32.dll" Guid="099c472d-a534-47be-878a-4a9ac7a75855">
+			  <File Id="Avalonia.Win32.dll" Name="Avalonia.Win32.dll" Source="$(var.PDFTransform_TargetDir)Avalonia.Win32.dll" />
+			</Component>
+			<Component Id="Avalonia.OpenGL.dll" Guid="319e68d3-b463-4f50-a606-f1c08223dfe6">
+			  <File Id="Avalonia.OpenGL.dll" Name="Avalonia.OpenGL.dll" Source="$(var.PDFTransform_TargetDir)Avalonia.OpenGL.dll" />
+			</Component>
+			<Component Id="Avalonia.FreeDesktop.dll" Guid="f7bbcce3-8a60-4e9f-98a8-1f886a4a354e">
+			  <File Id="Avalonia.FreeDesktop.dll" Name="Avalonia.FreeDesktop.dll" Source="$(var.PDFTransform_TargetDir)Avalonia.FreeDesktop.dll" />
+			</Component>
+			<Component Id="Avalonia.X11.dll" Guid="8e2a8db4-ec82-444d-8fe2-0a46de71c407">
+			  <File Id="Avalonia.X11.dll" Name="Avalonia.X11.dll" Source="$(var.PDFTransform_TargetDir)Avalonia.X11.dll" />
+			</Component>
+			<Component Id="Tmds.DBus.dll" Guid="23f1946f-d2a4-4aab-8241-66a1196efc69">
+			  <File Id="Tmds.DBus.dll" Name="Tmds.DBus.dll" Source="$(var.PDFTransform_TargetDir)Tmds.DBus.dll" />
+			</Component>
+			<Component Id="Avalonia.Skia.dll" Guid="a2f021c2-9296-411c-8ad0-79ee8c8d5f37">
+			  <File Id="Avalonia.Skia.dll" Name="Avalonia.Skia.dll" Source="$(var.PDFTransform_TargetDir)Avalonia.Skia.dll" />
+			</Component>
+			<Component Id="SkiaSharp.dll" Guid="fba354fd-5936-4c3c-b80c-b9b30808f2b1">
+			  <File Id="SkiaSharp.dll" Name="SkiaSharp.dll" Source="$(var.PDFTransform_TargetDir)SkiaSharp.dll" />
+			</Component>
+			
+			<Component Id="Avalonia.MicroCom.dll" Guid="b049b830-f3af-4d11-be79-5fd674a964ce">
+			  <File Id="Avalonia.MicroCom.dll" Name="Avalonia.MicroCom.dll" Source="$(var.PDFTransform_TargetDir)Avalonia.MicroCom.dll" />
+			</Component>
+			
+			<Component Id="Splat.dll" Guid="c0268568-38b6-4968-b26b-7cf8f6ce0a12">
+			  <File Id="Splat.dll" Name="Splat.dll" Source="$(var.PDFTransform_TargetDir)Splat.dll" />
+			</Component>
+			<Component Id="Avalonia.Remote.Protocol.dll" Guid="c06ce905-f02b-405d-833f-a92e88b11c3a">
+			  <File Id="Avalonia.Remote.Protocol.dll" Name="Avalonia.Remote.Protocol.dll" Source="$(var.PDFTransform_TargetDir)Avalonia.Remote.Protocol.dll" />
+			</Component>
+			<Component Id="PDFTransform.dll" Guid="1eb8f167-fb81-4ad8-a815-03f01d821d78">
+			  <File Id="PDFTransform.dll" Name="PDFTransform.dll" Source="$(var.PDFTransform_TargetDir)PDFTransform.dll" />
+			</Component>
+			<Component Id="Avalonia.Controls.dll" Guid="fb073dd4-002d-403c-96af-32a6aba95543">
+			  <File Id="Avalonia.Controls.dll" Name="Avalonia.Controls.dll" Source="$(var.PDFTransform_TargetDir)Avalonia.Controls.dll" />
+			</Component>
+			<Component Id="Avalonia.DesktopRuntime.dll" Guid="c019ab1e-b3e3-4d3e-ad37-ee0dbb1075d8">
+			  <File Id="Avalonia.DesktopRuntime.dll" Name="Avalonia.DesktopRuntime.dll" Source="$(var.PDFTransform_TargetDir)Avalonia.DesktopRuntime.dll" />
+			</Component>
+			<Component Id="ReactiveUI.dll" Guid="def1932e-391e-4e67-8b2d-6b4e785181e6">
+			  <File Id="ReactiveUI.dll" Name="ReactiveUI.dll" Source="$(var.PDFTransform_TargetDir)ReactiveUI.dll" />
+			</Component>
+			<Component Id="System.Reactive.dll" Guid="6c239267-84ad-4277-af0e-9f88580f2c73">
+			  <File Id="System.Reactive.dll" Name="System.Reactive.dll" Source="$(var.PDFTransform_TargetDir)System.Reactive.dll" />
+			</Component>
+			<Component Id="Docnet.Core.dll" Guid="adb0c5b8-1097-4cd3-8936-e2f1b5e3233d">
+			  <File Id="Docnet.Core.dll" Name="Docnet.Core.dll" Source="$(var.PDFTransform_TargetDir)Docnet.Core.dll" />
+			</Component>
+			<Component Id="EPPlusFree.dll" Guid="92a29c6f-8fec-48a0-bb05-f08f28da5053">
+			  <File Id="EPPlusFree.dll" Name="EPPlusFree.dll" Source="$(var.PDFTransform_TargetDir)EPPlusFree.dll" />
+			</Component>
+			<Component Id="Google.Apis.Drive.v3.dll" Guid="54e0e5b8-d8d4-4e32-b54c-8ed8aadd029c">
+			  <File Id="Google.Apis.Drive.v3.dll" Name="Google.Apis.Drive.v3.dll" Source="$(var.PDFTransform_TargetDir)Google.Apis.Drive.v3.dll" />
+			</Component>
+			<Component Id="Google.Apis.Auth.dll" Guid="3cd2e1fb-17ea-439f-b94a-1dfcbca1810f">
+			  <File Id="Google.Apis.Auth.dll" Name="Google.Apis.Auth.dll" Source="$(var.PDFTransform_TargetDir)Google.Apis.Auth.dll" />
+			</Component>
+			<Component Id="Avalonia.Base.dll" Guid="220ce1b5-a575-4e59-8870-f81eca0a2dba">
+			  <File Id="Avalonia.Base.dll" Name="Avalonia.Base.dll" Source="$(var.PDFTransform_TargetDir)Avalonia.Base.dll" />
+			</Component>
+			<Component Id="Avalonia.Markup.Xaml.dll" Guid="e599d43b-c9a3-4c8d-9cbd-1533b00487c5">
+			  <File Id="Avalonia.Markup.Xaml.dll" Name="Avalonia.Markup.Xaml.dll" Source="$(var.PDFTransform_TargetDir)Avalonia.Markup.Xaml.dll" />
+			</Component>
+			<Component Id="Avalonia.Animation.dll" Guid="63ddddb7-bb31-49c3-88f8-d3137ff9c6c8">
+			  <File Id="Avalonia.Animation.dll" Name="Avalonia.Animation.dll" Source="$(var.PDFTransform_TargetDir)Avalonia.Animation.dll" />
+			</Component>
+			<Component Id="Avalonia.Styling.dll" Guid="b3e62adc-009d-4df1-8136-1e092fc6fe2e">
+			  <File Id="Avalonia.Styling.dll" Name="Avalonia.Styling.dll" Source="$(var.PDFTransform_TargetDir)Avalonia.Styling.dll" />
+			</Component>
+			<Component Id="Avalonia.ReactiveUI.dll" Guid="3120767e-fa99-40c1-9894-1c4363347479">
+			  <File Id="Avalonia.ReactiveUI.dll" Name="Avalonia.ReactiveUI.dll" Source="$(var.PDFTransform_TargetDir)Avalonia.ReactiveUI.dll" />
+			</Component>
+			
+			<Component Id="Google.Apis.dll" Guid="f14ca71a-14c8-47d8-887b-c4035384892a">
+			  <File Id="Google.Apis.dll" Name="Google.Apis.dll" Source="$(var.PDFTransform_TargetDir)Google.Apis.dll" />
+			</Component>
+			<Component Id="Google.Apis.Core.dll" Guid="08680865-5eec-4c54-8b7e-949efb46dd77">
+			  <File Id="Google.Apis.Core.dll" Name="Google.Apis.Core.dll" Source="$(var.PDFTransform_TargetDir)Google.Apis.Core.dll" />
+			</Component>
+			<Component Id="Avalonia.Themes.Fluent.dll" Guid="67c453f0-e6a5-4064-abea-8089988b28de">
+			  <File Id="Avalonia.Themes.Fluent.dll" Name="Avalonia.Themes.Fluent.dll" Source="$(var.PDFTransform_TargetDir)Avalonia.Themes.Fluent.dll" />
+			</Component>
+			<Component Id="Avalonia.Layout.dll" Guid="ac08bd5c-26f8-4b26-941a-c9d61b0e7b04">
+			  <File Id="Avalonia.Layout.dll" Name="Avalonia.Layout.dll" Source="$(var.PDFTransform_TargetDir)Avalonia.Layout.dll" />
+			</Component>
+			<Component Id="Avalonia.Controls.DataGrid.dll" Guid="d25fbbd4-d6b8-49b8-8b00-1b3244a837ce">
+			  <File Id="Avalonia.Controls.DataGrid.dll" Name="Avalonia.Controls.DataGrid.dll" Source="$(var.PDFTransform_TargetDir)Avalonia.Controls.DataGrid.dll" />
+			</Component>
+			<Component Id="Avalonia.Visuals.dll" Guid="a525d2e2-5dce-4498-9727-53661bb38863">
+			  <File Id="Avalonia.Visuals.dll" Name="Avalonia.Visuals.dll" Source="$(var.PDFTransform_TargetDir)Avalonia.Visuals.dll" />
+			</Component>
+			<Component Id="Avalonia.Markup.dll" Guid="9a8bf043-6801-442e-98c3-e87a2ca0f651">
+			  <File Id="Avalonia.Markup.dll" Name="Avalonia.Markup.dll" Source="$(var.PDFTransform_TargetDir)Avalonia.Markup.dll" />
+			</Component>
+			<Component Id="Avalonia.Input.dll" Guid="0dff2e10-7c51-4028-8fab-0351e493f989">
+			  <File Id="Avalonia.Input.dll" Name="Avalonia.Input.dll" Source="$(var.PDFTransform_TargetDir)Avalonia.Input.dll" />
+			</Component>
+			<Component Id="Avalonia.Interactivity.dll" Guid="501aa83c-85cc-441a-a1d4-bf618bdb4a58">
+			  <File Id="Avalonia.Interactivity.dll" Name="Avalonia.Interactivity.dll" Source="$(var.PDFTransform_TargetDir)Avalonia.Interactivity.dll" />
+			</Component>
+			<Component Id="Avalonia.Desktop.dll" Guid="8a166717-1924-4cb0-a6f5-ded6176bce37">
+			  <File Id="Avalonia.Desktop.dll" Name="Avalonia.Desktop.dll" Source="$(var.PDFTransform_TargetDir)Avalonia.Desktop.dll" />
+			</Component>
+			
+			<Component Id="HarfBuzzSharp.dll" Guid="04bacf29-0286-4cbd-94c8-850ca6fd18b0">
+			  <File Id="HarfBuzzSharp.dll" Name="HarfBuzzSharp.dll" Source="$(var.PDFTransform_TargetDir)HarfBuzzSharp.dll" />
+			</Component>
+			
+      <Component Id="PDFTransform.exe" Guid="23291d29-fd0f-4ac3-b515-91517c30b24d">
+        <File Id="PDFTransform.exe" Name="PDFTransform.exe" Source="$(var.PDFTransform_TargetDir)PDFTransform.exe" />
+      </Component>
+		</ComponentGroup>
+	</Fragment>
+</Wix>
