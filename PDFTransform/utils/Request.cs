@@ -35,7 +35,7 @@ namespace PDFTransform.utils
             });
         }
 
-        public async Task<List<DriveEntry>> DriveSeachFiles(string folderId)
+        public async Task<List<DriveEntry>> DriveSearchFiles(string folderId)
         {
             List<DriveEntry> entries = new List<DriveEntry>();
 
@@ -94,7 +94,7 @@ namespace PDFTransform.utils
 
         public async Task<string> GetActas(string folder, Action<decimal> setter, bool trace)
         {
-            List<DriveEntry> entries = await DriveSeachFiles(folder);
+            List<DriveEntry> entries = await DriveSearchFiles(folder);
 
             if(entries.Count > 0)
             {
